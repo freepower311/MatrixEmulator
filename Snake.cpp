@@ -2,7 +2,7 @@
 #include <QtGui/QColor>
 #include <QtCore/QPoint>
 #define START_LENGTH 4    // начальная длина змейки
-#define MAX_LENGTH 80     // максимальная длина змейки
+
 
 Snake::Snake(QObject* parent):
   QObject(parent)
@@ -15,7 +15,12 @@ Snake::Snake(QObject* parent):
       m_array.back().push_back(GameObject::EMPTY);
     }
   }
+
+}
+void Snake::init()
+{
   startTimer(500);
+  emit signalSetMatrixSize(10, 10);
 }
 bool Snake::checkWall(quint32 x, quint32 y)
 {
@@ -24,7 +29,9 @@ bool Snake::checkWall(quint32 x, quint32 y)
   return x < 0 || x >= m_array.size() || y < 0 || y >= m_array[0].size();
 }
 void Snake::timerEvent(QTimerEvent*)
-{}
+{
+  emit signalSetColor(5, 5, QColor(0, 255, 0));
+}
 Snake::Direction Snake::chooseDirection(qint32 previousPosX, qint32 previousPosY, qint32 currentPosX, qint32 currentPosY, qint32 applePosX, qint32 applePosY)
 {
   qint32 leftPosX;
@@ -43,7 +50,7 @@ Snake::Direction Snake::chooseDirection(qint32 previousPosX, qint32 previousPosY
   qint32 appleVectY;
   Direction favouriteDirection;
   Direction finalDirection;
-  QPoint finalPos;
+  qint32 finalPos[2];
 
   previousVectX = currentPosX - previousPosX;
   previousVectY = currentPosY - previousPosY;
@@ -173,11 +180,28 @@ Snake::Direction Snake::chooseDirection(qint32 previousPosX, qint32 previousPosY
     Q_ASSERT(false);
     break;
   }
-  if(finalDirection == Direction::LEFT)
+  switch(finalDirection)
   {
-    finalPos[X] = leftPosX;
-    finalPos[x] = leftPosX;
+  case Direction::LEFT:
+  {
+    finalPos[0] = leftPosX;
+    finalPos[1] = leftPosY;
   }
+  break;
+  case Direction::RIGHT:
+  {
+    finalPos[0] = leftPosX;
+    finalPos[1] = leftPosY;
+  }
+  break;
+  case Direction::FORVARD:
+  {
+    finalPos[0] = leftPosX;
+    finalPos[1] = leftPosY;
+  }
+  break;
+
+
 
   return finalPos;
 
@@ -192,7 +216,7 @@ Snake::Direction Snake::chooseDirection(qint32 previousPosX, qint32 previousPosY
 
 
 
-
+/*
 int8_t vectorX, vectorY;
 int8_t headX, headY, buttX, buttY;
 int8_t appleX, appleY;

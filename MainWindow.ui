@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="Emulator" name="widget" native="true"/>
+     <widget class="Emulator" name="emulator" native="true"/>
     </item>
     <item>
      <widget class="QPushButton" name="Button123">

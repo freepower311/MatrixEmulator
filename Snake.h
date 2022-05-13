@@ -19,6 +19,7 @@ public:
   };
   Snake(QObject* parent = nullptr);
   void timerEvent(QTimerEvent*);
+  void init();
 
 signals:
   void signalSetColor(qint32 x, qint32 y, const QColor& color);
